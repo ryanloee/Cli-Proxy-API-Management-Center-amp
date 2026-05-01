@@ -960,6 +960,8 @@
     "codebuddy_intl_oauth_button": "開始 Codebuddy Intl 登入",
     "codebuddy_intl_oauth_hint": "透過裝置授權流程登入 Codebuddy 國際版服務 (codebuddy.ai)。",
     "codebuddy_intl_oauth_url_label": "授權連結:",
+    "codebuddy_intl_copy_link": "複製連結",
+    "codebuddy_intl_open_link": "開啟連結",
     "codebuddy_intl_oauth_status_waiting": "等待驗證中...",
     "codebuddy_intl_oauth_status_success": "驗證成功！",
     "codebuddy_intl_oauth_status_error": "驗證失敗:",

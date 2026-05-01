@@ -948,6 +948,8 @@
     "codebuddy_intl_oauth_button": "Начать вход Codebuddy Intl",
     "codebuddy_intl_oauth_hint": "Выполните вход в сервис Codebuddy International (codebuddy.ai) через поток авторизации устройства.",
     "codebuddy_intl_oauth_url_label": "URL авторизации:",
+    "codebuddy_intl_copy_link": "Копировать ссылку",
+    "codebuddy_intl_open_link": "Открыть ссылку",
     "codebuddy_intl_oauth_status_waiting": "Ожидание аутентификации...",
     "codebuddy_intl_oauth_status_success": "Аутентификация успешна!",
     "codebuddy_intl_oauth_status_error": "Ошибка аутентификации:",

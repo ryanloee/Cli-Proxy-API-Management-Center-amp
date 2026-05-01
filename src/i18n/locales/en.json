@@ -951,6 +951,8 @@
     "codebuddy_intl_oauth_button": "Start Codebuddy Intl Login",
     "codebuddy_intl_oauth_hint": "Login to Codebuddy International service (codebuddy.ai) through OAuth device flow.",
     "codebuddy_intl_oauth_url_label": "Authorization URL:",
+    "codebuddy_intl_copy_link": "Copy Link",
+    "codebuddy_intl_open_link": "Open Link",
     "codebuddy_intl_oauth_status_waiting": "Waiting for authentication...",
     "codebuddy_intl_oauth_status_success": "Authentication successful!",
     "codebuddy_intl_oauth_status_error": "Authentication failed:",

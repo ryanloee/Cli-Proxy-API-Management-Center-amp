@@ -951,6 +951,8 @@
     "codebuddy_intl_oauth_button": "开始 Codebuddy Intl 登录",
     "codebuddy_intl_oauth_hint": "通过设备授权流程登录 Codebuddy 国际版服务 (codebuddy.ai)。",
     "codebuddy_intl_oauth_url_label": "授权链接:",
+    "codebuddy_intl_copy_link": "复制链接",
+    "codebuddy_intl_open_link": "打开链接",
     "codebuddy_intl_oauth_status_waiting": "等待认证中...",
     "codebuddy_intl_oauth_status_success": "认证成功！",
     "codebuddy_intl_oauth_status_error": "认证失败:",
