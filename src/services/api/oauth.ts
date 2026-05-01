@@ -9,7 +9,9 @@ export type OAuthProvider =
   | 'anthropic'
   | 'antigravity'
   | 'gemini-cli'
-  | 'kimi';
+  | 'kimi'
+  | 'codebuddy'
+  | 'codebuddy-intl';
 
 export interface OAuthStartResponse {
   url: string;
