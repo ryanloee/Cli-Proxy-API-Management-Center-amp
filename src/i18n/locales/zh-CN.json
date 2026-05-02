@@ -958,6 +958,17 @@
     "codebuddy_intl_oauth_status_error": "认证失败:",
     "codebuddy_intl_oauth_start_error": "启动 Codebuddy Intl OAuth 失败:",
     "codebuddy_intl_oauth_polling_error": "检查认证状态失败:",
+    "trae_oauth_title": "Trae（国际版）",
+    "trae_oauth_button": "开始 Trae 登录",
+    "trae_oauth_hint": "通过 OAuth 流程登录 Trae 国际版服务（trae.ai），自动获取并保存认证文件。",
+    "trae_oauth_url_label": "授权链接:",
+    "trae_copy_link": "复制链接",
+    "trae_open_link": "打开链接",
+    "trae_oauth_status_waiting": "等待认证中...",
+    "trae_oauth_status_success": "认证成功！",
+    "trae_oauth_status_error": "认证失败:",
+    "trae_oauth_start_error": "启动 Trae OAuth 失败:",
+    "trae_oauth_polling_error": "检查认证状态失败:",
     "remote_access_disabled": "远程访问不支持此登录方式，请从本地 (localhost) 访问"
   },
   "usage_stats": {

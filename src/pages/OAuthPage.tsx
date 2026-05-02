@@ -18,6 +18,7 @@ import iconKimiDark from '@/assets/icons/kimi-dark.svg';
 import iconVertex from '@/assets/icons/vertex.svg';
 import iconCodebuddyCn from '@/assets/icons/codebuddy.png';
 import iconCodebuddyIntl from '@/assets/icons/workbuddy.png';
+import iconTrae from '@/assets/icons/trae.png';
 
 interface ProviderState {
   url?: string;
@@ -71,7 +72,8 @@ const PROVIDERS: { id: OAuthProvider; titleKey: string; hintKey: string; urlLabe
   { id: 'gemini-cli', titleKey: 'auth_login.gemini_cli_oauth_title', hintKey: 'auth_login.gemini_cli_oauth_hint', urlLabelKey: 'auth_login.gemini_cli_oauth_url_label', icon: iconGemini },
   { id: 'kimi', titleKey: 'auth_login.kimi_oauth_title', hintKey: 'auth_login.kimi_oauth_hint', urlLabelKey: 'auth_login.kimi_oauth_url_label', icon: { light: iconKimiLight, dark: iconKimiDark } },
   { id: 'codebuddy', titleKey: 'auth_login.codebuddy_oauth_title', hintKey: 'auth_login.codebuddy_oauth_hint', urlLabelKey: 'auth_login.codebuddy_oauth_url_label', icon: iconCodebuddyCn },
-  { id: 'codebuddy-intl', titleKey: 'auth_login.codebuddy_intl_oauth_title', hintKey: 'auth_login.codebuddy_intl_oauth_hint', urlLabelKey: 'auth_login.codebuddy_intl_oauth_url_label', icon: iconCodebuddyIntl }
+  { id: 'codebuddy-intl', titleKey: 'auth_login.codebuddy_intl_oauth_title', hintKey: 'auth_login.codebuddy_intl_oauth_hint', urlLabelKey: 'auth_login.codebuddy_intl_oauth_url_label', icon: iconCodebuddyIntl },
+  { id: 'trae', titleKey: 'auth_login.trae_oauth_title', hintKey: 'auth_login.trae_oauth_hint', urlLabelKey: 'auth_login.trae_oauth_url_label', icon: iconTrae }
 ];
 
 const CALLBACK_SUPPORTED: OAuthProvider[] = ['codex', 'anthropic', 'antigravity', 'gemini-cli'];

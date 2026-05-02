@@ -11,7 +11,8 @@ export type OAuthProvider =
   | 'gemini-cli'
   | 'kimi'
   | 'codebuddy'
-  | 'codebuddy-intl';
+  | 'codebuddy-intl'
+  | 'trae';
 
 export interface OAuthStartResponse {
   url: string;

@@ -958,6 +958,17 @@
     "codebuddy_intl_oauth_status_error": "Authentication failed:",
     "codebuddy_intl_oauth_start_error": "Failed to start Codebuddy Intl OAuth:",
     "codebuddy_intl_oauth_polling_error": "Failed to check authentication status:",
+    "trae_oauth_title": "Trae (International)",
+    "trae_oauth_button": "Start Trae Login",
+    "trae_oauth_hint": "Login to Trae international service (trae.ai) through OAuth flow, automatically obtain and save authentication files.",
+    "trae_oauth_url_label": "Authorization URL:",
+    "trae_copy_link": "Copy Link",
+    "trae_open_link": "Open Link",
+    "trae_oauth_status_waiting": "Waiting for authentication...",
+    "trae_oauth_status_success": "Authentication successful!",
+    "trae_oauth_status_error": "Authentication failed:",
+    "trae_oauth_start_error": "Failed to start Trae OAuth:",
+    "trae_oauth_polling_error": "Failed to check authentication status:",
     "remote_access_disabled": "This login method is not available for remote access. Please access from localhost."
   },
   "usage_stats": {

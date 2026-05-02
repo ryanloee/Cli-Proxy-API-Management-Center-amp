@@ -955,6 +955,17 @@
     "codebuddy_intl_oauth_status_error": "Ошибка аутентификации:",
     "codebuddy_intl_oauth_start_error": "Не удалось запустить Codebuddy Intl OAuth:",
     "codebuddy_intl_oauth_polling_error": "Не удалось проверить статус аутентификации:",
+    "trae_oauth_title": "Trae (International)",
+    "trae_oauth_button": "Начать вход Trae",
+    "trae_oauth_hint": "Выполните вход в международный сервис Trae (trae.ai) через OAuth и автоматически получите/сохраните файлы авторизации.",
+    "trae_oauth_url_label": "URL авторизации:",
+    "trae_copy_link": "Копировать ссылку",
+    "trae_open_link": "Открыть ссылку",
+    "trae_oauth_status_waiting": "Ожидание аутентификации...",
+    "trae_oauth_status_success": "Аутентификация успешна!",
+    "trae_oauth_status_error": "Ошибка аутентификации:",
+    "trae_oauth_start_error": "Не удалось запустить Trae OAuth:",
+    "trae_oauth_polling_error": "Не удалось проверить статус аутентификации:",
     "remote_access_disabled": "Этот способ входа недоступен при удалённом доступе. Подключитесь с localhost."
   },
   "usage_stats": {
