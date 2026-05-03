@@ -1405,9 +1405,9 @@ const fetchCodebuddyQuota = async (
   }
   const packages: CodebuddyQuotaRow[] = (usage.user_resources?.packages || []).map((pkg, idx) => {
     const name = pkg.package_name || `${t('codebuddy_quota.package_label')} #${idx + 1}`;
-    const total = pkg.total || pkg.cycle_total || 0;
-    const remain = pkg.remain != null ? pkg.remain : (pkg.cycle_remain ?? 0);
-    const used = pkg.used || total - remain;
+    const total = pkg.cycle_total || pkg.total || 0;
+    const remain = pkg.cycle_remain != null ? pkg.cycle_remain : (pkg.remain ?? 0);
+    const used = total - remain;
     return {
       id: `codebuddy-pkg-${idx}`,
       label: name,
