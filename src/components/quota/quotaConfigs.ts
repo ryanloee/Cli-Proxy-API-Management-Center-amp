@@ -1374,7 +1374,7 @@ const fetchCodebuddyUsageBatch = async (): Promise<CodebuddyUsageResponse> => {
     return codebuddyBatchPromise;
   }
   codebuddyBatchPromise = apiClient
-    .get<CodebuddyUsageResponse>('/v0/management/codebuddy-usage')
+    .get<CodebuddyUsageResponse>('/codebuddy-usage')
     .then((data) => {
       codebuddyBatchCache = { timestamp: Date.now(), data };
       return data;
