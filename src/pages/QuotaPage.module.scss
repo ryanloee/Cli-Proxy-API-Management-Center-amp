@@ -112,6 +112,7 @@
 
 .antigravityGrid,
 .claudeGrid,
+.codebuddyGrid,
 .codexGrid,
 .geminiCliGrid,
 .kimiGrid {
@@ -126,6 +127,7 @@
 
 .antigravityControls,
 .claudeControls,
+.codebuddyControls,
 .codexControls,
 .geminiCliControls,
 .kimiControls {
@@ -138,6 +140,7 @@
 
 .antigravityControl,
 .claudeControl,
+.codebuddyControl,
 .codexControl,
 .geminiCliControl,
 .kimiControl {
@@ -274,6 +277,12 @@
   background-image: linear-gradient(180deg,
       rgba(220, 232, 255, 0.2),
       rgba(220, 232, 255, 0));
+}
+
+.codebuddyCard {
+  background-image: linear-gradient(180deg,
+      rgba(232, 245, 233, 0.2),
+      rgba(232, 245, 233, 0));
 }
 
 .quotaSection {

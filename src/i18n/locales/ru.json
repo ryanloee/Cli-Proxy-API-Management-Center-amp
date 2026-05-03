@@ -729,6 +729,22 @@
     "limit_index": "Лимит #{{index}}",
     "reset_hint": "сброс через {{hint}}"
   },
+  "codebuddy_quota": {
+    "title": "Квота Codebuddy",
+    "empty_title": "Файлы авторизации Codebuddy отсутствуют",
+    "empty_desc": "Загрузите учётные данные Codebuddy, чтобы увидеть оставшуюся квоту.",
+    "idle": "Нажмите здесь, чтобы обновить квоту",
+    "loading": "Загрузка квоты...",
+    "load_failed": "Не удалось загрузить квоту: {{message}}",
+    "empty_data": "Данные по квоте отсутствуют",
+    "no_data": "Данные об использовании для этой учётной записи не найдены",
+    "plan_label": "План: ",
+    "plan_free": "Бесплатный",
+    "plan_pro": "Про",
+    "dosage_label": "Статус: ",
+    "package_label": "Пакет",
+    "expires": "Истекает"
+  },
   "vertex_import": {
     "title": "Вход с Vertex JSON",
     "description": "Загрузите JSON ключа сервисного аккаунта Google, чтобы сохранить его как auth-dir/vertex-<project>.json по тем же правилам, что и помощник CLI vertex-import.",

@@ -15,6 +15,9 @@ import type {
   ClaudeQuotaState,
   ClaudeQuotaWindow,
   ClaudeUsagePayload,
+  CodebuddyQuotaRow,
+  CodebuddyQuotaState,
+  CodebuddyUsageResponse,
   CodexRateLimitInfo,
   CodexQuotaState,
   CodexUsageWindow,
@@ -29,7 +32,7 @@ import type {
   KimiQuotaRow,
   KimiQuotaState,
 } from '@/types';
-import { apiCallApi, authFilesApi, getApiCallErrorMessage } from '@/services/api';
+import { apiCallApi, apiClient, authFilesApi, getApiCallErrorMessage } from '@/services/api';
 import { useQuotaStore } from '@/stores';
 import {
   ANTIGRAVITY_QUOTA_URLS,
@@ -69,6 +72,7 @@ import {
   getStatusFromError,
   isAntigravityFile,
   isClaudeFile,
+  isCodebuddyFile,
   isCodexFile,
   isDisabledAuthFile,
   isGeminiCliFile,
@@ -81,7 +85,7 @@ import styles from '@/pages/QuotaPage.module.scss';
 
 type QuotaUpdater<T> = T | ((prev: T) => T);
 
-type QuotaType = 'antigravity' | 'claude' | 'codex' | 'gemini-cli' | 'kimi';
+type QuotaType = 'antigravity' | 'claude' | 'codebuddy' | 'codex' | 'gemini-cli' | 'kimi';
 
 const DEFAULT_ANTIGRAVITY_PROJECT_ID = 'bamboo-precept-lgxtn';
 const QUOTA_PROGRESS_HIGH_THRESHOLD = 70;
@@ -95,11 +99,13 @@ const geminiCliSupplementaryCache = new Map<
 export interface QuotaStore {
   antigravityQuota: Record<string, AntigravityQuotaState>;
   claudeQuota: Record<string, ClaudeQuotaState>;
+  codebuddyQuota: Record<string, CodebuddyQuotaState>;
   codexQuota: Record<string, CodexQuotaState>;
   geminiCliQuota: Record<string, GeminiCliQuotaState>;
   kimiQuota: Record<string, KimiQuotaState>;
   setAntigravityQuota: (updater: QuotaUpdater<Record<string, AntigravityQuotaState>>) => void;
   setClaudeQuota: (updater: QuotaUpdater<Record<string, ClaudeQuotaState>>) => void;
+  setCodebuddyQuota: (updater: QuotaUpdater<Record<string, CodebuddyQuotaState>>) => void;
   setCodexQuota: (updater: QuotaUpdater<Record<string, CodexQuotaState>>) => void;
   setGeminiCliQuota: (updater: QuotaUpdater<Record<string, GeminiCliQuotaState>>) => void;
   setKimiQuota: (updater: QuotaUpdater<Record<string, KimiQuotaState>>) => void;
@@ -1352,4 +1358,194 @@ export const KIMI_CONFIG: QuotaConfig<KimiQuotaState, KimiQuotaRow[]> = {
   controlClassName: styles.kimiControl,
   gridClassName: styles.kimiGrid,
   renderQuotaItems: renderKimiItems,
+};
+
+// --- Codebuddy quota ---
+
+const CODEBUDDY_USAGE_BATCH_TTL = 5000;
+let codebuddyBatchCache: { timestamp: number; data: CodebuddyUsageResponse } | null = null;
+let codebuddyBatchPromise: Promise<CodebuddyUsageResponse> | null = null;
+
+const fetchCodebuddyUsageBatch = async (): Promise<CodebuddyUsageResponse> => {
+  if (codebuddyBatchCache && Date.now() - codebuddyBatchCache.timestamp < CODEBUDDY_USAGE_BATCH_TTL) {
+    return codebuddyBatchCache.data;
+  }
+  if (codebuddyBatchPromise) {
+    return codebuddyBatchPromise;
+  }
+  codebuddyBatchPromise = apiClient
+    .get<CodebuddyUsageResponse>('/v0/management/codebuddy-usage')
+    .then((data) => {
+      codebuddyBatchCache = { timestamp: Date.now(), data };
+      return data;
+    })
+    .finally(() => {
+      codebuddyBatchPromise = null;
+    });
+  return codebuddyBatchPromise;
+};
+
+const fetchCodebuddyQuota = async (
+  file: AuthFileItem,
+  t: TFunction
+): Promise<{
+  paymentType: string | null;
+  dosageNotify: { code: string; zh?: string; en?: string } | null;
+  packages: CodebuddyQuotaRow[];
+}> => {
+  const data = await fetchCodebuddyUsageBatch();
+  const usage = (data.usage || []).find(
+    (u) => u.auth_id === file.name || u.auth_id === file.name.replace(/^codebuddy-intl-/, 'codebuddy-')
+  );
+  if (!usage) {
+    throw new Error(t('codebuddy_quota.no_data'));
+  }
+  if (usage.error && !usage.user_resources?.packages?.length) {
+    throw new Error(usage.error);
+  }
+  const packages: CodebuddyQuotaRow[] = (usage.user_resources?.packages || []).map((pkg, idx) => {
+    const name = pkg.package_name || `${t('codebuddy_quota.package_label')} #${idx + 1}`;
+    const total = pkg.total || pkg.cycle_total || 0;
+    const remain = pkg.remain != null ? pkg.remain : (pkg.cycle_remain ?? 0);
+    const used = pkg.used || total - remain;
+    return {
+      id: `codebuddy-pkg-${idx}`,
+      label: name,
+      total,
+      remain,
+      used,
+      endTime: pkg.end_time,
+    };
+  });
+  return {
+    paymentType: usage.payment_type || usage.plan_type || null,
+    dosageNotify: usage.dosage_notify || null,
+    packages,
+  };
+};
+
+const renderCodebuddyItems = (
+  quota: CodebuddyQuotaState,
+  t: TFunction,
+  helpers: QuotaRenderHelpers
+): ReactNode => {
+  const { styles: styleMap, QuotaProgressBar } = helpers;
+  const { createElement: h, Fragment } = React;
+  const packages = quota.packages ?? [];
+  const paymentType = quota.paymentType ?? null;
+  const dosageNotify = quota.dosageNotify ?? null;
+  const nodes: ReactNode[] = [];
+
+  if (paymentType) {
+    const ptLabel =
+      paymentType.toLowerCase() === 'free'
+        ? t('codebuddy_quota.plan_free')
+        : paymentType.toLowerCase() === 'pro'
+          ? t('codebuddy_quota.plan_pro')
+          : paymentType;
+    nodes.push(
+      h(
+        'div',
+        { key: 'plan', className: styleMap.codexPlan },
+        h('span', { className: styleMap.codexPlanLabel }, t('codebuddy_quota.plan_label')),
+        h('span', { className: styleMap.codexPlanValue }, ptLabel)
+      )
+    );
+  }
+
+  if (dosageNotify && dosageNotify.code) {
+    const notifyLabel = dosageNotify.en || dosageNotify.zh || dosageNotify.code;
+    nodes.push(
+      h(
+        'div',
+        { key: 'dosage', className: styleMap.codexPlan },
+        h('span', { className: styleMap.codexPlanLabel }, t('codebuddy_quota.dosage_label')),
+        h('span', { className: styleMap.codexPlanValue }, notifyLabel)
+      )
+    );
+  }
+
+  if (packages.length === 0) {
+    nodes.push(
+      h('div', { key: 'empty', className: styleMap.quotaMessage }, t('codebuddy_quota.empty_data'))
+    );
+    return h(Fragment, null, ...nodes);
+  }
+
+  nodes.push(
+    ...packages.map((pkg) => {
+      const limit = pkg.total;
+      const used = pkg.used;
+      const remain = pkg.remain;
+      const remaining =
+        limit > 0
+          ? Math.max(0, Math.min(100, Math.round((remain / limit) * 100)))
+          : used > 0
+            ? 0
+            : null;
+      const percentLabel = remaining === null ? '--' : `${remaining}%`;
+      const usageLabel = limit > 0 ? `${used} / ${limit}` : `${used}`;
+
+      return h(
+        'div',
+        { key: pkg.id, className: styleMap.quotaRow },
+        h(
+          'div',
+          { className: styleMap.quotaRowHeader },
+          h('span', { className: styleMap.quotaModel }, pkg.label),
+          h(
+            'div',
+            { className: styleMap.quotaMeta },
+            h('span', { className: styleMap.quotaPercent }, percentLabel),
+            h('span', { className: styleMap.quotaAmount }, usageLabel),
+            pkg.endTime
+              ? h('span', { className: styleMap.quotaReset }, `${t('codebuddy_quota.expires')} ${formatQuotaResetTime(pkg.endTime)}`)
+              : null
+          )
+        ),
+        h(QuotaProgressBar, {
+          percent: remaining,
+          highThreshold: QUOTA_PROGRESS_HIGH_THRESHOLD,
+          mediumThreshold: QUOTA_PROGRESS_MEDIUM_THRESHOLD,
+        })
+      );
+    })
+  );
+
+  return h(Fragment, null, ...nodes);
+};
+
+export const CODEBUDDY_CONFIG: QuotaConfig<
+  CodebuddyQuotaState,
+  {
+    paymentType: string | null;
+    dosageNotify: { code: string; zh?: string; en?: string } | null;
+    packages: CodebuddyQuotaRow[];
+  }
+> = {
+  type: 'codebuddy',
+  i18nPrefix: 'codebuddy_quota',
+  cardIdleMessageKey: 'quota_management.card_idle_hint',
+  filterFn: (file) => isCodebuddyFile(file) && !isDisabledAuthFile(file),
+  fetchQuota: fetchCodebuddyQuota,
+  storeSelector: (state) => state.codebuddyQuota,
+  storeSetter: 'setCodebuddyQuota',
+  buildLoadingState: () => ({ status: 'loading', packages: [], paymentType: null, dosageNotify: null }),
+  buildSuccessState: (data) => ({
+    status: 'success',
+    packages: data.packages,
+    paymentType: data.paymentType,
+    dosageNotify: data.dosageNotify,
+  }),
+  buildErrorState: (message, status) => ({
+    status: 'error',
+    packages: [],
+    error: message,
+    errorStatus: status,
+  }),
+  cardClassName: styles.codebuddyCard,
+  controlsClassName: styles.codebuddyControls,
+  controlClassName: styles.codebuddyControl,
+  gridClassName: styles.codebuddyGrid,
+  renderQuotaItems: renderCodebuddyItems,
 };

@@ -43,6 +43,11 @@ export function isKimiFile(file: AuthFileItem): boolean {
   return resolveAuthProvider(file) === 'kimi';
 }
 
+export function isCodebuddyFile(file: AuthFileItem): boolean {
+  const provider = resolveAuthProvider(file);
+  return provider === 'codebuddy' || provider === 'codebuddy-intl' || provider === 'trae';
+}
+
 export function isRuntimeOnlyAuthFile(file: AuthFileItem): boolean {
   const raw = file['runtime_only'] ?? file.runtimeOnly;
   if (typeof raw === 'boolean') return raw;

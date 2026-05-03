@@ -306,3 +306,56 @@ export interface KimiQuotaState {
   error?: string;
   errorStatus?: number;
 }
+
+// Codebuddy API payload types
+export interface CodebuddyUsageResult {
+  provider: string;
+  label?: string;
+  auth_id: string;
+  domain?: string;
+  uid?: string;
+  plan_type?: string;
+  dosage_notify?: {
+    code: string;
+    zh?: string;
+    en?: string;
+  } | null;
+  payment_type?: string;
+  user_resources?: {
+    total_count?: number;
+    packages?: {
+      package_name?: string;
+      total: number;
+      remain: number;
+      used: number;
+      status: number;
+      start_time?: string;
+      end_time?: string;
+      cycle_remain?: number;
+      cycle_total?: number;
+    }[];
+  } | null;
+  error?: string;
+}
+
+export interface CodebuddyUsageResponse {
+  usage: CodebuddyUsageResult[];
+}
+
+export interface CodebuddyQuotaRow {
+  id: string;
+  label: string;
+  total: number;
+  remain: number;
+  used: number;
+  endTime?: string;
+}
+
+export interface CodebuddyQuotaState {
+  status: 'idle' | 'loading' | 'success' | 'error';
+  paymentType?: string | null;
+  dosageNotify?: { code: string; zh?: string; en?: string } | null;
+  packages: CodebuddyQuotaRow[];
+  error?: string;
+  errorStatus?: number;
+}
