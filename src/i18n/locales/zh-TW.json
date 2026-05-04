@@ -737,6 +737,22 @@
     "package_label": "資源包",
     "expires": "到期"
   },
+  "trae_quota": {
+    "title": "Trae 配額",
+    "empty_title": "暫無 Trae 驗證",
+    "empty_desc": "透過 Trae OAuth 登入後即可查看配額。",
+    "idle": "點擊此處重新整理配額",
+    "loading": "正在載入配額...",
+    "load_failed": "配額取得失敗：{{message}}",
+    "empty_data": "暫無配額資料",
+    "no_data": "未找到該帳號的用量資料",
+    "plan_label": "方案：",
+    "reset_label": "重設：",
+    "pack_label": "資源包",
+    "basic": "基礎額度",
+    "bonus": "額外額度",
+    "expires": "到期"
+  },
   "vertex_import": {
     "title": "Vertex JSON 登入",
     "description": "上傳 Google 服務帳號 JSON，使用 CLI vertex-import 同步規則寫入 auth-dir/vertex-<project>.json。",

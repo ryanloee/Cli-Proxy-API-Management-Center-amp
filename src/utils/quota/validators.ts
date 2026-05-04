@@ -48,6 +48,10 @@ export function isCodebuddyFile(file: AuthFileItem): boolean {
   return provider === 'codebuddy' || provider === 'codebuddy-intl' || provider === 'trae';
 }
 
+export function isTraeFile(file: AuthFileItem): boolean {
+  return resolveAuthProvider(file) === 'trae';
+}
+
 export function isRuntimeOnlyAuthFile(file: AuthFileItem): boolean {
   const raw = file['runtime_only'] ?? file.runtimeOnly;
   if (typeof raw === 'boolean') return raw;

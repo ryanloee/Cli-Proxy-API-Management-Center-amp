@@ -14,7 +14,8 @@ import {
   CODEBUDDY_CONFIG,
   CODEX_CONFIG,
   GEMINI_CLI_CONFIG,
-  KIMI_CONFIG
+  KIMI_CONFIG,
+  TRAE_CONFIG
 } from '@/components/quota';
 import type { AuthFileItem } from '@/types';
 import styles from './QuotaPage.module.scss';
@@ -104,6 +105,12 @@ export function QuotaPage() {
       />
       <QuotaSection
         config={KIMI_CONFIG}
+        files={files}
+        loading={loading}
+        disabled={disableControls}
+      />
+      <QuotaSection
+        config={TRAE_CONFIG}
         files={files}
         loading={loading}
         disabled={disableControls}

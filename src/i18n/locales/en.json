@@ -737,6 +737,22 @@
     "package_label": "Package",
     "expires": "Expires"
   },
+  "trae_quota": {
+    "title": "Trae Quota",
+    "empty_title": "No Trae Auth Files",
+    "empty_desc": "Login via Trae OAuth to view remaining quota.",
+    "idle": "Click here to refresh quota",
+    "loading": "Loading quota...",
+    "load_failed": "Failed to load quota: {{message}}",
+    "empty_data": "No quota data available",
+    "no_data": "No usage data found for this account",
+    "plan_label": "Plan: ",
+    "reset_label": "Reset: ",
+    "pack_label": "Pack",
+    "basic": "Basic",
+    "bonus": "Bonus",
+    "expires": "Expires"
+  },
   "vertex_import": {
     "title": "Vertex JSON Login",
     "description": "Upload a Google service account JSON to store it as auth-dir/vertex-<project>.json using the same rules as the CLI vertex-import helper.",

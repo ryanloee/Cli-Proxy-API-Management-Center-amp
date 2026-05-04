@@ -734,6 +734,22 @@
     "package_label": "Пакет",
     "expires": "Истекает"
   },
+  "trae_quota": {
+    "title": "Квота Trae",
+    "empty_title": "Файлы авторизации Trae отсутствуют",
+    "empty_desc": "Войдите через Trae OAuth, чтобы увидеть оставшуюся квоту.",
+    "idle": "Нажмите здесь, чтобы обновить квоту",
+    "loading": "Загрузка квоты...",
+    "load_failed": "Не удалось загрузить квоту: {{message}}",
+    "empty_data": "Данные по квоте отсутствуют",
+    "no_data": "Данные об использовании для этой учётной записи не найдены",
+    "plan_label": "План: ",
+    "reset_label": "Сброс: ",
+    "pack_label": "Пакет",
+    "basic": "Основной",
+    "bonus": "Бонусный",
+    "expires": "Истекает"
+  },
   "vertex_import": {
     "title": "Вход с Vertex JSON",
     "description": "Загрузите JSON ключа сервисного аккаунта Google, чтобы сохранить его как auth-dir/vertex-<project>.json по тем же правилам, что и помощник CLI vertex-import.",
