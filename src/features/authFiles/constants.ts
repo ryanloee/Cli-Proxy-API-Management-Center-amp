@@ -1,13 +1,18 @@
 import type { TFunction } from 'i18next';
 import iconAntigravity from '@/assets/icons/antigravity.svg';
 import iconClaude from '@/assets/icons/claude.svg';
+import iconCline from '@/assets/icons/cline.svg';
 import iconCodex from '@/assets/icons/codex.svg';
 import iconGemini from '@/assets/icons/gemini.svg';
 import iconIflow from '@/assets/icons/iflow.svg';
 import iconKimiDark from '@/assets/icons/kimi-dark.svg';
 import iconKimiLight from '@/assets/icons/kimi-light.svg';
+import iconKiro from '@/assets/icons/kiro.svg';
 import iconQwen from '@/assets/icons/qwen.svg';
 import iconVertex from '@/assets/icons/vertex.svg';
+import iconCodebuddyCn from '@/assets/icons/codebuddy.png';
+import iconCodebuddyIntl from '@/assets/icons/workbuddy.png';
+import iconTrae from '@/assets/icons/trae.png';
 import type { AuthFileItem } from '@/types';
 import { parseTimestamp } from '@/utils/timestamp';
 
@@ -96,6 +101,26 @@ export const TYPE_COLORS: Record<string, TypeColorSet> = {
     light: { bg: '#f5f5f5', text: '#616161' },
     dark: { bg: '#424242', text: '#bdbdbd' },
   },
+  codebuddy: {
+    light: { bg: '#e8f5e9', text: '#2e7d32' },
+    dark: { bg: '#1b5e20', text: '#a5d6a7' },
+  },
+  'codebuddy-intl': {
+    light: { bg: '#e8f5e9', text: '#2e7d32' },
+    dark: { bg: '#1b5e20', text: '#a5d6a7' },
+  },
+  cline: {
+    light: { bg: '#ede5fd', text: '#6c5ce7' },
+    dark: { bg: '#4a3ab5', text: '#c8b8f8' },
+  },
+  kiro: {
+    light: { bg: '#fff3e0', text: '#e65100' },
+    dark: { bg: '#bf360c', text: '#ffcc80' },
+  },
+  trae: {
+    light: { bg: '#e0f2f1', text: '#00695c' },
+    dark: { bg: '#004d40', text: '#80cbc4' },
+  },
   unknown: {
     light: { bg: '#f0f0f0', text: '#666666', border: '1px dashed #999999' },
     dark: { bg: '#3a3a3a', text: '#aaaaaa', border: '1px dashed #666666' },
@@ -106,12 +131,17 @@ export const AUTH_FILE_ICONS: Record<string, AuthFileIconAsset> = {
   antigravity: iconAntigravity,
   aistudio: iconGemini,
   claude: iconClaude,
+  cline: iconCline,
   codex: iconCodex,
+  codebuddy: iconCodebuddyCn,
+  'codebuddy-intl': iconCodebuddyIntl,
   gemini: iconGemini,
   'gemini-cli': iconGemini,
   iflow: iconIflow,
   kimi: { light: iconKimiLight, dark: iconKimiDark },
+  kiro: iconKiro,
   qwen: iconQwen,
+  trae: iconTrae,
   vertex: iconVertex,
 };
 

@@ -54,6 +54,26 @@ export const TYPE_COLORS: Record<string, TypeColorSet> = {
     light: { bg: '#f5f5f5', text: '#616161' },
     dark: { bg: '#424242', text: '#bdbdbd' },
   },
+  codebuddy: {
+    light: { bg: '#e8f5e9', text: '#2e7d32' },
+    dark: { bg: '#1b5e20', text: '#a5d6a7' },
+  },
+  'codebuddy-intl': {
+    light: { bg: '#e8f5e9', text: '#2e7d32' },
+    dark: { bg: '#1b5e20', text: '#a5d6a7' },
+  },
+  cline: {
+    light: { bg: '#ede5fd', text: '#6c5ce7' },
+    dark: { bg: '#4a3ab5', text: '#c8b8f8' },
+  },
+  kiro: {
+    light: { bg: '#fff3e0', text: '#e65100' },
+    dark: { bg: '#bf360c', text: '#ffcc80' },
+  },
+  trae: {
+    light: { bg: '#e0f2f1', text: '#00695c' },
+    dark: { bg: '#004d40', text: '#80cbc4' },
+  },
   unknown: {
     light: { bg: '#f0f0f0', text: '#666666', border: '1px dashed #999999' },
     dark: { bg: '#3a3a3a', text: '#aaaaaa', border: '1px dashed #666666' },
