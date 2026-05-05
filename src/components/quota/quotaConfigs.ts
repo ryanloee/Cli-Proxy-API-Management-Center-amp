@@ -31,9 +31,6 @@ import type {
   GeminiCliUserTier,
   KimiQuotaRow,
   KimiQuotaState,
-  TraeQuotaRow,
-  TraeQuotaState,
-  TraeUsageResponse,
 } from '@/types';
 import { apiCallApi, apiClient, authFilesApi, getApiCallErrorMessage } from '@/services/api';
 import { useQuotaStore } from '@/stores';
@@ -81,7 +78,6 @@ import {
   isGeminiCliFile,
   isKimiFile,
   isRuntimeOnlyAuthFile,
-  isTraeFile,
 } from '@/utils/quota';
 import { normalizeAuthIndex } from '@/utils/authIndex';
 import type { QuotaRenderHelpers } from './QuotaCard';
@@ -89,7 +85,7 @@ import styles from '@/pages/QuotaPage.module.scss';
 
 type QuotaUpdater<T> = T | ((prev: T) => T);
 
-type QuotaType = 'antigravity' | 'claude' | 'codebuddy' | 'codex' | 'gemini-cli' | 'kimi' | 'trae';
+type QuotaType = 'antigravity' | 'claude' | 'codebuddy' | 'codex' | 'gemini-cli' | 'kimi';
 
 const DEFAULT_ANTIGRAVITY_PROJECT_ID = 'bamboo-precept-lgxtn';
 const QUOTA_PROGRESS_HIGH_THRESHOLD = 70;
@@ -107,14 +103,12 @@ export interface QuotaStore {
   codexQuota: Record<string, CodexQuotaState>;
   geminiCliQuota: Record<string, GeminiCliQuotaState>;
   kimiQuota: Record<string, KimiQuotaState>;
-  traeQuota: Record<string, TraeQuotaState>;
   setAntigravityQuota: (updater: QuotaUpdater<Record<string, AntigravityQuotaState>>) => void;
   setClaudeQuota: (updater: QuotaUpdater<Record<string, ClaudeQuotaState>>) => void;
   setCodebuddyQuota: (updater: QuotaUpdater<Record<string, CodebuddyQuotaState>>) => void;
   setCodexQuota: (updater: QuotaUpdater<Record<string, CodexQuotaState>>) => void;
   setGeminiCliQuota: (updater: QuotaUpdater<Record<string, GeminiCliQuotaState>>) => void;
   setKimiQuota: (updater: QuotaUpdater<Record<string, KimiQuotaState>>) => void;
-  setTraeQuota: (updater: QuotaUpdater<Record<string, TraeQuotaState>>) => void;
   clearQuotaCache: () => void;
 }
 
@@ -1554,196 +1548,4 @@ export const CODEBUDDY_CONFIG: QuotaConfig<
   controlClassName: styles.codebuddyControl,
   gridClassName: styles.codebuddyGrid,
   renderQuotaItems: renderCodebuddyItems,
-};
-
-// --- Trae quota ---
-
-const TRAE_USAGE_BATCH_TTL = 5000;
-let traeBatchCache: { timestamp: number; data: TraeUsageResponse } | null = null;
-let traeBatchPromise: Promise<TraeUsageResponse> | null = null;
-
-const fetchTraeUsageBatch = async (): Promise<TraeUsageResponse> => {
-  if (traeBatchCache && Date.now() - traeBatchCache.timestamp < TRAE_USAGE_BATCH_TTL) {
-    return traeBatchCache.data;
-  }
-  if (traeBatchPromise) {
-    return traeBatchPromise;
-  }
-  traeBatchPromise = apiClient
-    .get<TraeUsageResponse>('/trae-usage')
-    .then((data) => {
-      traeBatchCache = { timestamp: Date.now(), data };
-      return data;
-    })
-    .finally(() => {
-      traeBatchPromise = null;
-    });
-  return traeBatchPromise;
-};
-
-const fetchTraeQuota = async (
-  file: AuthFileItem,
-  t: TFunction
-): Promise<{
-  planType: string | null;
-  planResetAt: number | null;
-  packs: TraeQuotaRow[];
-}> => {
-  const data = await fetchTraeUsageBatch();
-  const usage = (data.usage || []).find((u) => u.auth_id === file.name);
-  if (!usage) {
-    throw new Error(t('trae_quota.no_data'));
-  }
-  if (usage.error && !usage.packs?.length) {
-    throw new Error(usage.error);
-  }
-  const packs: TraeQuotaRow[] = (usage.packs || []).map((pack, idx) => ({
-    id: `trae-pack-${idx}`,
-    label: pack.product_name || `${t('trae_quota.pack_label')} #${idx + 1}`,
-    basicTotal: pack.basic_usage_limit,
-    basicUsed: pack.basic_usage_amount,
-    bonusTotal: pack.bonus_usage_limit,
-    bonusUsed: pack.bonus_usage_amount,
-    endTime: pack.end_time,
-  }));
-  return {
-    planType: usage.plan_type || null,
-    planResetAt: usage.plan_reset_at || null,
-    packs,
-  };
-};
-
-const renderTraeItems = (
-  quota: TraeQuotaState,
-  t: TFunction,
-  helpers: QuotaRenderHelpers
-): ReactNode => {
-  const { styles: styleMap, QuotaProgressBar } = helpers;
-  const { createElement: h, Fragment } = React;
-  const packs = quota.packs ?? [];
-  const planType = quota.planType ?? null;
-  const planResetAt = quota.planResetAt ?? null;
-  const nodes: ReactNode[] = [];
-
-  if (planType) {
-    nodes.push(
-      h(
-        'div',
-        { key: 'plan', className: styleMap.codexPlan },
-        h('span', { className: styleMap.codexPlanLabel }, t('trae_quota.plan_label')),
-        h('span', { className: styleMap.codexPlanValue }, planType)
-      )
-    );
-  }
-
-  if (planResetAt && planResetAt > 0) {
-    const resetDate = new Date(planResetAt * 1000);
-    nodes.push(
-      h(
-        'div',
-        { key: 'reset', className: styleMap.codexPlan },
-        h('span', { className: styleMap.codexPlanLabel }, t('trae_quota.reset_label')),
-        h('span', { className: styleMap.codexPlanValue }, resetDate.toLocaleDateString())
-      )
-    );
-  }
-
-  if (packs.length === 0) {
-    nodes.push(
-      h('div', { key: 'empty', className: styleMap.quotaMessage }, t('trae_quota.empty_data'))
-    );
-    return h(Fragment, null, ...nodes);
-  }
-
-  nodes.push(
-    ...packs.map((pack) => {
-      const basicTotal = pack.basicTotal;
-      const basicUsed = pack.basicUsed;
-      const bonusTotal = pack.bonusTotal;
-      const bonusUsed = pack.bonusUsed;
-      const totalLimit = basicTotal + bonusTotal;
-      const totalUsed = basicUsed + bonusUsed;
-      const remaining =
-        totalLimit > 0
-          ? Math.max(0, Math.min(100, Math.round(((totalLimit - totalUsed) / totalLimit) * 100)))
-          : totalUsed > 0
-            ? 0
-            : null;
-      const percentLabel = remaining === null ? '--' : `${remaining}%`;
-      const usageLabel = totalLimit > 0 ? `${totalUsed} / ${totalLimit}` : `${totalUsed}`;
-      const basicLabel = basicTotal > 0 ? `${basicUsed} / ${basicTotal}` : '';
-      const bonusLabel = bonusTotal > 0 ? `${bonusUsed} / ${bonusTotal}` : '';
-
-      return h(
-        'div',
-        { key: pack.id, className: styleMap.quotaRow },
-        h(
-          'div',
-          { className: styleMap.quotaRowHeader },
-          h('span', { className: styleMap.quotaModel }, pack.label),
-          h(
-            'div',
-            { className: styleMap.quotaMeta },
-            h('span', { className: styleMap.quotaPercent }, percentLabel),
-            h('span', { className: styleMap.quotaAmount }, usageLabel),
-            pack.endTime
-              ? h('span', { className: styleMap.quotaReset }, `${t('trae_quota.expires')} ${new Date(pack.endTime * 1000).toLocaleDateString()}`)
-              : null
-          )
-        ),
-        basicLabel
-          ? h(
-            'div',
-            { key: `${pack.id}-basic`, className: styleMap.quotaRowHeader, style: { fontSize: '12px', color: 'var(--text-secondary)' } },
-            h('span', null, `${t('trae_quota.basic')}: ${basicLabel}`),
-            bonusLabel
-              ? h('span', null, `${t('trae_quota.bonus')}: ${bonusLabel}`)
-              : null
-          )
-          : null,
-        h(QuotaProgressBar, {
-          percent: remaining,
-          highThreshold: QUOTA_PROGRESS_HIGH_THRESHOLD,
-          mediumThreshold: QUOTA_PROGRESS_MEDIUM_THRESHOLD,
-        })
-      );
-    })
-  );
-
-  return h(Fragment, null, ...nodes);
-};
-
-export const TRAE_CONFIG: QuotaConfig<
-  TraeQuotaState,
-  {
-    planType: string | null;
-    planResetAt: number | null;
-    packs: TraeQuotaRow[];
-  }
-> = {
-  type: 'trae',
-  i18nPrefix: 'trae_quota',
-  cardIdleMessageKey: 'quota_management.card_idle_hint',
-  filterFn: (file) => isTraeFile(file) && !isDisabledAuthFile(file),
-  fetchQuota: fetchTraeQuota,
-  storeSelector: (state) => state.traeQuota,
-  storeSetter: 'setTraeQuota',
-  buildLoadingState: () => ({ status: 'loading', packs: [], planType: null, planResetAt: null }),
-  buildSuccessState: (data) => ({
-    status: 'success',
-    packs: data.packs,
-    planType: data.planType,
-    planResetAt: data.planResetAt,
-  }),
-  buildErrorState: (message, status) => ({
-    status: 'error',
-    packs: [],
-    error: message,
-    errorStatus: status,
-  }),
-  cardClassName: styles.traeCard,
-  controlsClassName: styles.traeControls,
-  controlClassName: styles.traeControl,
-  gridClassName: styles.traeGrid,
-  renderQuotaItems: renderTraeItems,
 };

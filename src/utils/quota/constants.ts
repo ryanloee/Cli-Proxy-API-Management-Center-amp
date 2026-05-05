@@ -70,10 +70,6 @@ export const TYPE_COLORS: Record<string, TypeColorSet> = {
     light: { bg: '#fff3e0', text: '#e65100' },
     dark: { bg: '#bf360c', text: '#ffcc80' },
   },
-  trae: {
-    light: { bg: '#e0f2f1', text: '#00695c' },
-    dark: { bg: '#004d40', text: '#80cbc4' },
-  },
   unknown: {
     light: { bg: '#f0f0f0', text: '#666666', border: '1px dashed #999999' },
     dark: { bg: '#3a3a3a', text: '#aaaaaa', border: '1px dashed #666666' },

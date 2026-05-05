@@ -11,8 +11,7 @@ export type OAuthProvider =
   | 'gemini-cli'
   | 'kimi'
   | 'codebuddy'
-  | 'codebuddy-intl'
-  | 'trae';
+  | 'codebuddy-intl';
 
 // OAuth 流程状态
 export interface OAuthFlow {

@@ -737,22 +737,6 @@
     "package_label": "Package",
     "expires": "Expires"
   },
-  "trae_quota": {
-    "title": "Trae Quota",
-    "empty_title": "No Trae Auth Files",
-    "empty_desc": "Login via Trae OAuth to view remaining quota.",
-    "idle": "Click here to refresh quota",
-    "loading": "Loading quota...",
-    "load_failed": "Failed to load quota: {{message}}",
-    "empty_data": "No quota data available",
-    "no_data": "No usage data found for this account",
-    "plan_label": "Plan: ",
-    "reset_label": "Reset: ",
-    "pack_label": "Pack",
-    "basic": "Basic",
-    "bonus": "Bonus",
-    "expires": "Expires"
-  },
   "vertex_import": {
     "title": "Vertex JSON Login",
     "description": "Upload a Google service account JSON to store it as auth-dir/vertex-<project>.json using the same rules as the CLI vertex-import helper.",
@@ -979,17 +963,6 @@
     "codebuddy_intl_oauth_status_error": "Authentication failed:",
     "codebuddy_intl_oauth_start_error": "Failed to start Codebuddy Intl OAuth:",
     "codebuddy_intl_oauth_polling_error": "Failed to check authentication status:",
-    "trae_oauth_title": "Trae (International)",
-    "trae_oauth_button": "Start Trae Login",
-    "trae_oauth_hint": "Login to Trae international service (trae.ai) through OAuth flow, automatically obtain and save authentication files.",
-    "trae_oauth_url_label": "Authorization URL:",
-    "trae_copy_link": "Copy Link",
-    "trae_open_link": "Open Link",
-    "trae_oauth_status_waiting": "Waiting for authentication...",
-    "trae_oauth_status_success": "Authentication successful!",
-    "trae_oauth_status_error": "Authentication failed:",
-    "trae_oauth_start_error": "Failed to start Trae OAuth:",
-    "trae_oauth_polling_error": "Failed to check authentication status:",
     "remote_access_disabled": "This login method is not available for remote access. Please access from localhost."
   },
   "stats": {

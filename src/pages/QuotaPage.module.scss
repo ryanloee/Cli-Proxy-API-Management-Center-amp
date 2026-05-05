@@ -115,8 +115,7 @@
 .codebuddyGrid,
 .codexGrid,
 .geminiCliGrid,
-.kimiGrid,
-.traeGrid {
+.kimiGrid {
   display: grid;
   gap: $spacing-md;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -131,8 +130,7 @@
 .codebuddyControls,
 .codexControls,
 .geminiCliControls,
-.kimiControls,
-.traeControls {
+.kimiControls {
   display: flex;
   gap: $spacing-md;
   flex-wrap: wrap;
@@ -145,8 +143,7 @@
 .codebuddyControl,
 .codexControl,
 .geminiCliControl,
-.kimiControl,
-.traeControl {
+.kimiControl {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -286,12 +283,6 @@
   background-image: linear-gradient(180deg,
       rgba(232, 245, 233, 0.2),
       rgba(232, 245, 233, 0));
-}
-
-.traeCard {
-  background-image: linear-gradient(180deg,
-      rgba(255, 243, 224, 0.2),
-      rgba(255, 243, 224, 0));
 }
 
 .quotaSection {

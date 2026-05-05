@@ -737,22 +737,6 @@
     "package_label": "资源包",
     "expires": "到期"
   },
-  "trae_quota": {
-    "title": "Trae 额度",
-    "empty_title": "暂无 Trae 认证",
-    "empty_desc": "通过 Trae OAuth 登录后即可查看额度。",
-    "idle": "点击此处刷新额度",
-    "loading": "正在加载额度...",
-    "load_failed": "额度获取失败：{{message}}",
-    "empty_data": "暂无额度数据",
-    "no_data": "未找到该账号的用量数据",
-    "plan_label": "套餐：",
-    "reset_label": "重置：",
-    "pack_label": "资源包",
-    "basic": "基础额度",
-    "bonus": "额外额度",
-    "expires": "到期"
-  },
   "vertex_import": {
     "title": "Vertex JSON 登录",
     "description": "上传 Google 服务账号 JSON，使用 CLI vertex-import 同步规则写入 auth-dir/vertex-<project>.json。",
@@ -979,17 +963,6 @@
     "codebuddy_intl_oauth_status_error": "认证失败:",
     "codebuddy_intl_oauth_start_error": "启动 Codebuddy Intl OAuth 失败:",
     "codebuddy_intl_oauth_polling_error": "检查认证状态失败:",
-    "trae_oauth_title": "Trae（国际版）",
-    "trae_oauth_button": "开始 Trae 登录",
-    "trae_oauth_hint": "通过 OAuth 流程登录 Trae 国际版服务（trae.ai），自动获取并保存认证文件。",
-    "trae_oauth_url_label": "授权链接:",
-    "trae_copy_link": "复制链接",
-    "trae_open_link": "打开链接",
-    "trae_oauth_status_waiting": "等待认证中...",
-    "trae_oauth_status_success": "认证成功！",
-    "trae_oauth_status_error": "认证失败:",
-    "trae_oauth_start_error": "启动 Trae OAuth 失败:",
-    "trae_oauth_polling_error": "检查认证状态失败:",
     "remote_access_disabled": "远程访问不支持此登录方式，请从本地 (localhost) 访问"
   },
   "stats": {
